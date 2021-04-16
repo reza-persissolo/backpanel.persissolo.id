@@ -15,7 +15,10 @@
     <!-- StyleSheets  -->
     <link href="{{ asset('assets/css/dashlite.css?ver=2.2.0') }}" rel="stylesheet" type="text/css">
     <link id="skin-default" rel="stylesheet" href="{{ asset('assets/css/theme.css?ver=2.2.0') }}">
+<<<<<<< Updated upstream
     @yield('css')
+=======
+>>>>>>> Stashed changes
 </head>
 
 <body class="nk-body bg-lighter npc-general has-sidebar ">
@@ -168,8 +171,11 @@
     <script src="{{ asset('assets/js/bundle.js?ver=2.2.0') }}"></script>
     <script src="{{ asset('assets/js/scripts.js?ver=2.2.0') }}"></script>
     <script src="{{ asset('assets/js/charts/gd-default.js?ver=2.2.0') }}"></script>
+<<<<<<< Updated upstream
     
     @yield("js")
+=======
+>>>>>>> Stashed changes
 </body>
 
 </html>

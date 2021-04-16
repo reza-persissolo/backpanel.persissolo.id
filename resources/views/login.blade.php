@@ -41,6 +41,7 @@
                                         <h4 class="nk-block-title">Sign-In</h4>                                    
                                     </div>
                                 </div>
+<<<<<<< Updated upstream
                                 <form method="POST" enctype="multipart/form-data" action="/login">
                                 @csrf
                                                                 
@@ -49,6 +50,15 @@
                                             <label class="form-label" for="email">Email</label>
                                         </div>
                                         <input type="text" class="form-control form-control-lg" id="email" name="email" placeholder="Email">
+=======
+                                <form method="post" action="{{ route('login') }}">
+                                @csrf
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="username">Username</label>
+                                        </div>
+                                        <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Username">
+>>>>>>> Stashed changes
                                     </div>
                                     <div class="form-group">
                                         <div class="form-label-group">

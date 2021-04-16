@@ -1,11 +1,16 @@
 <?php
 
+<<<<<<< Updated upstream
 use App\Http\Controllers\GaleryImageController;
 use App\Http\Controllers\GaleryVideoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SponsorController;
+=======
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+<<<<<<< Updated upstream
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/login')->group(function (){
@@ -27,6 +33,22 @@ Route::prefix('/login')->group(function (){
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
 
+=======
+Route::get('/', function () {
+    return view('home.view');
+});
+
+Route::get('/home', [HomeController::class, 'index']);
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');;
+
+// Route::prefix('/login')->group(function (){
+//     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+//     Route::post('/','LoginController@login');
+//     Route::post('/logout','LoginController@logout')->name('logout');
+// });
+
+>>>>>>> Stashed changes
 Route::prefix('/reset')->group(function (){
     Route::get('/','ResetPasswordController@showResetForm')->name('resetpassword');
     Route::post('/','ResetPasswordController@reset');
@@ -36,6 +58,7 @@ Route::prefix('/register')->group(function (){
     Route::get('/','RegisterController@showRegisterForm')->name('register');
     Route::post('/','RegisterController@register');
 });
+<<<<<<< Updated upstream
 
 Route::prefix('/galery')->group(function (){
     Route::prefix('/image')->group(function (){
@@ -79,3 +102,5 @@ Route::prefix('/sponsor')->group(function (){
     Route::post('/{id}', [SponsorController::class, 'update'])->name('sponsor.update');
     Route::get('/delete/{id}', [SponsorController::class, 'delete'])->name('sponsor.delete');
 });
+=======
+>>>>>>> Stashed changes
