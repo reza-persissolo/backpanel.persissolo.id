@@ -6,10 +6,7 @@ use App\Helper\Constant;
 use App\Models\Akses;
 use App\Models\Menu;
 use App\Models\User;
-<<<<<<< Updated upstream
 use Illuminate\Auth\Authenticatable;
-=======
->>>>>>> Stashed changes
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -18,13 +15,8 @@ use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller {
 
-<<<<<<< Updated upstream
     use ThrottlesLogins;
         
-=======
-    use ThrottlesLogins;    
-    use AuthenticatesUsers;
->>>>>>> Stashed changes
     public $maxAttempts = 100;
     public $decayMinutes = 30;
 
@@ -51,11 +43,7 @@ class LoginController extends Controller {
         }
 
         if(Auth::guard('web')->attempt(
-<<<<<<< Updated upstream
             $request->only('email','password'),
-=======
-            $request->only('username','password'),
->>>>>>> Stashed changes
             $request->filled('remember'))){
 
             $user = Auth::user();
@@ -126,20 +114,12 @@ class LoginController extends Controller {
 
     private function validator(Request $request){
         $rules = [
-<<<<<<< Updated upstream
             'email' => 'required|string|min:5|max:191',
-=======
-            'username' => 'required|string|min:5|max:191',
->>>>>>> Stashed changes
             'password' => 'required|string|min:4|max:255',
         ];
 
         $messages = [
-<<<<<<< Updated upstream
             'email.exists' => 'These credentials do not match our records.',
-=======
-            'username.exists' => 'These credentials do not match our records.',
->>>>>>> Stashed changes
         ];
 
         $request->validate($rules,$messages);
@@ -153,10 +133,6 @@ class LoginController extends Controller {
     }
 
     public function username(){
-<<<<<<< Updated upstream
         return 'email';
-=======
-        return 'username';
->>>>>>> Stashed changes
     }
 }

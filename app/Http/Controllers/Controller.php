@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -67,18 +63,4 @@ class Controller extends BaseController{
         return '';
     }
 
-<<<<<<< Updated upstream
-=======
-    public function getExportName($outlet){
-        $fileName = '';
-        if ($outlet){
-            $data = Outlet::query()->findOrFail($outlet);
-
-            $fileName .= '_'.$data->nama;
-        }
-
-        $fileName .= '_'.date('YmdHis');
-        return $fileName;
-    }
->>>>>>> Stashed changes
 }
