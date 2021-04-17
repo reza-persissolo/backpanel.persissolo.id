@@ -10431,11 +10431,7 @@ body.nav-shown { overflow: hidden; }
 
 .nk-menu-link span.small { color: #8094ae; margin-left: .5rem; }
 
-<<<<<<< Updated upstream
 .nk-menu-icon { font-weight: normal; letter-spacing: normal; width: 36px; line-height: 1; flex-grow: 0; color: #ffffff; }
-=======
-.nk-menu-icon { font-weight: normal; letter-spacing: normal; width: 36px; line-height: 1; flex-grow: 0; color: #8094ae; }
->>>>>>> Stashed changes
 
 .is-theme .nk-menu-icon { color: #9cadfd; }
 
