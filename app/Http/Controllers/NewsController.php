@@ -32,15 +32,15 @@ class NewsController extends Controller {
         if ($id){
             $news = News::findOrFail($id);
 
-            $form['nama']       = $news->nama;
+            $form['judul']      = $news->judul;
+            $form['author']     = $news->author;
             $form['deskripsi']  = $news->deskripsi;
-            $form['image']      = $news->image;
             $form['url']        = url('news').'/'.$id;
         }else{
 
-            $form['nama']       = '';
+            $form['judul']      = '';
+            $form['author']     = '';
             $form['deskripsi']  = '';
-            $form['image']      = '';
             $form['url']        = url('news');
         }
         
@@ -49,5 +49,34 @@ class NewsController extends Controller {
         $data['form']   = $form;
 
         return $this->layout('news.form', $data);
+    }
+
+    public function save(Request $request){
+        $data = new News();
+        $data->judul     = $request->input('judul');
+        $data->author    = $request->input('author');
+        $data->deskripsi = $request->input('deskripsi');
+        $data->save();
+
+        return $this->json(true, 'Simpan Berhasil!');
+    }
+
+    public function update(Request $request, $id){
+        $data = News::findOrFail($id);
+        $data->judul     = $request->input('judul');
+        $data->author    = $request->input('author');
+        $data->deskripsi = $request->input('deskripsi');
+        $data->save();
+
+        return $this->json(true, 'Update Berhasil!');
+    }
+
+    public function delete($id){
+        $data = News::findOrFail($id);
+        $data->isdeleted    = true;
+        $data->deleted_at   = date('Y-m-d H:i:s');
+        $data->save();
+
+        return $this->json(true, 'Hapus Berhasil!');
     }
 }

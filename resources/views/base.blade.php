@@ -38,34 +38,18 @@
                     <div class="nk-sidebar-content">
                         <div class="nk-sidebar-menu" data-simplebar>
                             <ul class="nk-menu">
-                            @foreach($menu as $row)
-                                @if(count($row->sub) == 0)
-                                    <li class="nk-menu-item">
-                                        <a href="{{ url($row->link) }}" class="nk-menu-link @if($row->kode == $fitur) active @endif">
-                                            <span class="nk-menu-icon"><em class="{{ $row->icon }}"></em></span>
-                                            <span class="nk-menu-text">{{ $row->nama }}</span>
-                                        </a>
-                                    </li>
-                                @else
-                                    @php($str = explode('.', $fitur))
-                                    <li class="nk-menu-item has-sub @if($row->kode == $str[0])  @endif">
-                                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                                            <span class="nk-menu-icon"><em class="{{ $row->icon }}"></em></span>
-                                            <span class="nk-menu-text">{{ $row->nama }}</span>
-                                        </a>
-                                        <ul class="nk-menu-sub" >
-                                            @foreach($row->sub as $detail)
-                                                <li class="nk-menu-item">
-                                                    <a href="{{ url($detail->link) }}" class="nk-menu-link  @if($detail->kode == $fitur) active @endif">
-                                                        <span class="nk-menu-text">{{ $detail->nama }}</span>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </li>
-                                @endif
-                            @endforeach
-                                
+                                <li class="nk-menu-item">
+                                    <a href="#" class="nk-menu-link ">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-dashboard"></em></span>
+                                        <span class="nk-menu-text">Dashboard</span>
+                                    </a>
+                                </li>  
+                                <li class="nk-menu-item">
+                                    <a href="{{ route('news') }}" class="nk-menu-link ">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-article"></em></span>
+                                        <span class="nk-menu-text">News</span>
+                                    </a>
+                                </li>                                
                             </ul>
                         </div>
                     </div>
@@ -168,7 +152,52 @@
     <script src="{{ asset('assets/js/bundle.js?ver=2.2.0') }}"></script>
     <script src="{{ asset('assets/js/scripts.js?ver=2.2.0') }}"></script>
     <script src="{{ asset('assets/js/charts/gd-default.js?ver=2.2.0') }}"></script>
+    <script src="{{ asset('assets/js/blockui.min.js') }}"></script>
+    <script src="{{ asset('assets/js/pnotify.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sweet_alert.min.js') }}"></script>
+    <script src="{{ asset('assets/js/fancybox.min.js') }}"></script>
     
+    <script>
+        swal.setDefaults({
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-primary',
+            cancelButtonClass: 'btn btn-light'
+        });
+
+        function notifWarning(msg) {
+            new PNotify({
+                title: 'Perhatian !',
+                text: msg,
+                icon: 'icon-warning22',
+                addclass: 'bg-warning border-warning',
+                delay: 2000
+            });
+        }
+
+        function notifSuccess(msg) {
+            new PNotify({
+                title: 'Berhasil !',
+                text: msg,
+                icon: 'icon-checkmark3',
+                addclass: 'bg-success border-success',
+                delay: 2000
+            });
+        }
+
+        function goBlock(b){
+            $.blockUI({
+                showOverlay: b,
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }});
+        }
+    </script>
     @yield("js")
 </body>
 

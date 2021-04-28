@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helper\Constant;
-use App\Models\Akses;
-use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
@@ -47,53 +45,6 @@ class LoginController extends Controller {
             $request->filled('remember'))){
 
             $user = Auth::user();
-
-            if ($user->level_id == Constant::LEVEL_ADMINISTRATOR){
-                $menu = Menu::query()->where('level', Constant::MENU_LEVEL)
-                    ->with('sub')
-                    ->orderBy('seq', 'asc')
-                    ->get();
-
-                Session::put("menu", $menu);
-            }else{
-
-                $akses = Akses::query()->where('Level_id', $user->level_id)
-                    ->with('menu')
-                    ->get();
-
-                $main   = [];
-                $sub    = [];
-
-                foreach ($akses as $item) {
-                    if ($item->menu->menu_id){
-                        if (!array_search($item->menu->menu_id, $main)){
-                            $main[] = $item->menu->menu_id;
-                        }
-
-                        $sub[]  = $item->menu_id;
-                    }else{
-                        $main[] = $item->menu_id;
-                    }
-                }
-
-                $menu = Menu::query()->where('level', Constant::MENU_LEVEL)
-                    ->whereIn('id', $main)
-                    ->orderBy('seq', 'asc')
-                    ->get();
-
-                $ini = [];
-                foreach ($menu as $row) {
-                    $subs = Menu::query()->where('level', Constant::SUBMENU_LEVEL)
-                        ->where('menu_id', $row->id)
-                        ->whereIn('id', $sub)
-                        ->get();
-
-                    $row->sub = $subs;
-                    $ini[] = $row;
-                }
-
-                Session::put("menu", $ini);
-            }
 
             return redirect()
                 ->intended(route('home'))

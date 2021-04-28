@@ -1,8 +1,123 @@
 @extends('base', ["title" => $title, "fitur" => $fitur])
 
 @section('js')
+    <script src="{{ asset('assets/js/tables/datatables/datatables.min.js') }}"></script>
 <script>
     var table;
+
+    $(document).ready(function() {
+            if (!$().fancybox) {
+                console.warn('Warning - fancybox.min.js is not loaded.');
+                return;
+            }
+
+            $('[data-popup="lightbox"]').fancybox({
+                padding: 3
+            });
+
+            $.extend( $.fn.dataTable.defaults, {
+                autoWidth: false,
+                columnDefs: [{
+                    orderable: false,
+                    width: 100,
+                    targets: [ 0 ]
+                }],
+                
+                lengthMenu: [ 25,50, 75, 100 ],
+                displayLength: 25
+            });
+
+            table = $('.datatable-basic').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ url('news/show') }}",
+                    "type": "GET",
+                    beforeSend: function(){
+                        goBlock(false);
+                    },
+                    complete: function () {
+                        $.unblockUI();
+                    }
+                },
+                
+                "columns": [
+                    {'data': 'author'},
+                    {'data': 'judul'},
+                    {
+                        "data": "id",
+                        render: function ( data, type, full, meta ) {
+
+                            return '<div class="drodown">\n' +
+                                '   <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-view-list-fill"></em></a>\n' +
+                                '   <div class="dropdown-menu dropdown-menu-right">\n' +
+                                '   <ul class="link-list-opt no-bdr">\n' +
+                                '       <li><a href="{{ url('news/form') }}/'+ data +'"><em class="icon ni ni-pen2"></em><span>Ubah</span></a></li>\n' +
+                                '       <li><a onclick="hapus('+data+')"><em class="icon ni ni-trash"></em><span>Hapus</span></a></li>\n' +
+                                // '       <button onclick="hapus('+data+')" class="dropdown-item"><em class="icon ni ni-pen2"></em><span>Hapus</span></button>\n' +
+                                '   </ul>\n' +
+                                '   </div>\n' +
+                                '</div>';
+                        }
+                    },
+                ]
+            });
+        });
+
+        function reload_table(){
+            table.ajax.reload(null, false);
+        }
+
+        function hapus(id){
+
+            swal({
+                title: 'Apakah anda yakin?',
+                text: "Untuk menghapus data ini!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Tidak, Batalkan!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger',
+                buttonsStyling: false,
+                allowOutsideClick: false,
+                showLoaderOnConfirm: true,
+            }, function (result) {
+
+            }).then(function (result) {
+
+                if(result.value){
+                    $.ajax({
+                        url : "{{ url('news/delete/') }}"+"/"+id,
+                        type: "GET",
+                        cache:false,
+                        beforeSend:function(request) {
+                            goBlock(true);
+                        },
+                        dataType: "json",
+                        success: function(respon){
+                            $.unblockUI();
+
+                            reload_table();
+
+                            swal(
+                                'Berhasil !',
+                                respon.msg,
+                                'success'
+                            );
+
+                        },error: function (jqXHR, textStatus, errorThrown){
+                            $.unblockUI();
+                            swal(
+                                'Perhatian !!',
+                                errorThrown,
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
 
 </script>
 
@@ -32,44 +147,18 @@
 <div class="nk-block">
     <div class="card card-preview">
         <div class="card-inner">
-            <table class="datatable-init nowrap nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+            {{-- <table class="datatable-init nowrap table"> --}}
+            <table class="table datatable-basic">
                 <thead>
-                    <tr class="nk-tb-item nk-tb-head">
-                        <th class="nk-tb-col"><span class="sub-text">Nama</span></th>
-                        <th class="nk-tb-col tb-col-mb"><span class="sub-text">Image</span></th>
-                        <th class="nk-tb-col tb-col-md"><span class="sub-text">Deskripsi</span></th>
-                        <th class="nk-tb-col nk-tb-col-tools text-right">
-                        </th>
-                    </tr>
+                <tr style="background-color: #eaeaea;">
+                    <th>Author</th>
+                    <th>Judul</th>
+                    <th style="width:60px">Action</th>
+                </tr>
                 </thead>
-                <tbody>
-                    <tr class="nk-tb-item">
-                        <td class="nk-tb-col tb-col-mb">                            
-                        </td>
-                        <td class="nk-tb-col tb-col-lg">
-                        </td>
-                        <td class="nk-tb-col tb-col-lg">
-                        </td>
-                        <td class="nk-tb-col nk-tb-col-tools">
-                            <ul class="nk-tb-actions gx-1">                                
-                                <li>
-                                    <div class="drodown">
-                                        <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <ul class="link-list-opt no-bdr">
-                                                <li><a href="#"><em class="icon ni ni-eye"></em><span>Lihat</span></a></li>
-                                                <li><a href="#"><em class="icon ni ni-pen2"></em><span>Ubah</span></a></li>
-                                                <li><a href="#"><em class="icon ni ni-trash"></em><span>Hapus</span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
-    </div><!-- .card-preview -->
-</div> <!-- nk-block -->
+    </div>
+</div>
 @stop

@@ -17,9 +17,7 @@ class CreateNewsTable extends Migration
             $table->bigIncrements('id');
             $table->string('judul', 255);
             $table->string('deskripsi');
-            $table->string('image');
             $table->string('author');
-            $table->string('link');
             $table->timestamps();
             $table->softDeletes();
             $table->boolean('isdeleted')->default(false);
