@@ -18,6 +18,22 @@
 
     });
 
+    function loadPreview(input, id) {
+        id = id || '#preview_img';
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $(id)
+                    .attr('src', e.target.result)
+                    .width(240)
+                    .height(180);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
     function save() {
         if ($('#judul').val() == ''){
             notifWarning('Isian Judul tidak boleh kosong !');
@@ -91,6 +107,20 @@
                                     <input type="text" class="form-control" id="author" placeholder="Author"
                                     name="author" value="{{ $form['author'] }}">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label>Image:</label>
+                                <input type="file" name="image" value="{{ $form['image'] }}" id="image"
+                                       onchange="loadPreview(this);" class="form-control" />
+                                @if ($form['image'])
+                                    <img id="preview_img" src="{{ asset('images/'.$form['image']) }}"
+                                         class="" width="240" height="180">
+                                @else
+                                    <img id="preview_img" src="{{ asset('noimage.png') }}" class=""
+                                         width="240" height="180">
+                                @endif
                             </div>
                         </div>
                         <div class="col-sm-12">

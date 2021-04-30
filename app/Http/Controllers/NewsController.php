@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Helper\Constant;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller {
 
@@ -34,12 +37,14 @@ class NewsController extends Controller {
 
             $form['judul']      = $news->judul;
             $form['author']     = $news->author;
+            $form['image']      = $news->image;
             $form['deskripsi']  = $news->deskripsi;
             $form['url']        = url('news').'/'.$id;
         }else{
 
             $form['judul']      = '';
             $form['author']     = '';
+            $form['image']      = '';
             $form['deskripsi']  = '';
             $form['url']        = url('news');
         }
@@ -56,6 +61,23 @@ class NewsController extends Controller {
         $data->judul     = $request->input('judul');
         $data->author    = $request->input('author');
         $data->deskripsi = $request->input('deskripsi');
+
+        if ($request->file('image')){
+            $filename   = Str::random(32);
+            $image       = $request->file('image');
+            $filename .= '.'.$image->getClientOriginalExtension();
+
+            $img = Image::make($image->getRealPath())->resize(640, 640, function ($pict){
+                return $pict->aspectRatio();
+            });
+
+            $img->stream();
+
+            Storage::disk('images')->put('news/'.$filename, $img, 'public');
+
+            $data->image        = 'news/'.$filename;
+        }
+
         $data->save();
 
         return $this->json(true, 'Simpan Berhasil!');
@@ -66,6 +88,25 @@ class NewsController extends Controller {
         $data->judul     = $request->input('judul');
         $data->author    = $request->input('author');
         $data->deskripsi = $request->input('deskripsi');
+        
+        if ($request->file('image')){
+            Storage::disk('images')->delete($data->image);
+
+            $filename       = Str::random(32);
+            $image          = $request->file('image');
+            $filename       .= '.'.$image->getClientOriginalExtension();
+
+            $img = Image::make($image->getRealPath())->resize(640, 640, function ($pict){
+                return $pict->aspectRatio();
+            });
+
+            $img->stream();
+
+            Storage::disk('images')->put('news/'.$filename, $img, 'public');
+
+            $data->image        = 'news/'.$filename;
+        }
+
         $data->save();
 
         return $this->json(true, 'Update Berhasil!');

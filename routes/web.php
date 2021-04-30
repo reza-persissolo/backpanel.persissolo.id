@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContohNewsController;
 use App\Http\Controllers\GaleryImageController;
 use App\Http\Controllers\GaleryVideoController;
 use App\Http\Controllers\HomeController;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/contohnews/{id}', [ContohNewsController::class, 'index'])->name('contohnews');
 
 Route::prefix('/login')->group(function (){
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
